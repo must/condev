@@ -34,7 +34,9 @@ export const ListItemStyle = style(theme => ({
   }
 }));
 
-export const DetailStyle = style(() => ({
+export const DetailStyle = style((theme) => ({
+  background: theme.secondaryBackgroundColor,
+  color: theme.secondaryTextColor,
   width: '80%',
   height: '80vh',
 }));

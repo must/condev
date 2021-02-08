@@ -5,7 +5,9 @@ export const main = theme(
   {
     primaryColor: '#00917c',
     backgroundColor: '#f7f7f7',
+    secondaryBackgroundColor: '#5a718c',
     textColor: '#424242',
+    
     fontFamily: "Calibri, 'Trebuchet MS', sans-serif",
 
     highlightBackground: '#f7f7f7',
@@ -21,6 +23,7 @@ export const main = theme(
       green: 'green',
       blue: 'blue',
       red: 'red',
+      lightGreen: 'ccff9d',
     }
   },
   // dark mode overrides:

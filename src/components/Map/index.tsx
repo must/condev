@@ -29,10 +29,6 @@ export const Map: React.FC<MapProps> = ({ apiKey, center, zoom, children }) => (
       bootstrapURLKeys={{ key: apiKey }}
       defaultCenter={center}
       defaultZoom={zoom}
-      // yesIWantToUseGoogleMapApiInternals
-      // onGoogleApiLoaded={({ map, maps }) => {
-      //   map.fitBounds(maps.LatLngBounds());
-      // }}
     >
       {children}
     </GoogleMapReact>

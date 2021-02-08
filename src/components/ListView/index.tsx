@@ -35,8 +35,12 @@ export type ListDetailType = {
   id?: string;
 };
 
-export const Detail: React.FC<ListDetailType> = ({ children, id, isDefault = false }) => {
+export const Detail: React.FC<ListDetailType> = ({
+  children, id,
+  isDefault = false
+}) => {
   const { current } = useMasterContext();
+  const detailStyle = useThemedStyle(DetailStyle);
 
   const display = (
     isDefault &&
@@ -46,7 +50,10 @@ export const Detail: React.FC<ListDetailType> = ({ children, id, isDefault = fal
     current === id
   );
 
-  return display ? <div className={useThemedStyle(DetailStyle)}>{children}</div> : <></>;
+  return display ?
+    <div className={detailStyle}>
+      {children}
+    </div> : <></>;
 };
 
 

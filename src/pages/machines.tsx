@@ -8,7 +8,7 @@ import { Themed } from 'themed-jss/react';
 import { main } from '../themes/main';
 
 import { useThemedStyle } from 'themed-jss/react';
-import { MachineStatus } from './machines/style';
+import { MachineStatus, DetailStyle } from './machines/style';
 import { centroid } from '../util/geo';
 
 export interface MachinePageProps {
@@ -49,6 +49,23 @@ const MapComponent = ({ data }: MachinePageProps) => {
   </Detail>);
 };
 
+const MachineDetailComponent: React.FC<{ machine: Machine }> = ({ machine }) => (
+  <Detail id={machine.id}>
+    <div className={useThemedStyle(DetailStyle)}>
+      <h1>{machine.id}</h1>
+      <h5>
+        <span className={`${useThemedStyle(MachineStatus)} ${machine.status}`}>
+          {machine.status}
+        </span>
+      </h5>
+      <div>
+        <h4>Details</h4>
+        {machine.install_date.getDay()}
+      </div>
+    </div>
+  </Detail>
+);
+
 export const MachinesPage = ({ data }: MachinePageProps) => {
 
   return (
@@ -60,9 +77,12 @@ export const MachinesPage = ({ data }: MachinePageProps) => {
           )}
         </List>
         <MapComponent data={data}/>
-        { data.map(machine => <Detail id={machine.id}>
-          {machine.id}
-        </Detail>) }
+        { data.map(machine =>
+          <MachineDetailComponent
+            key={machine.id}
+            machine={machine}
+          />
+        ) }
       </ListView>
     </Themed>
   );
