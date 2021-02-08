@@ -60,7 +60,18 @@ const MachineDetailComponent: React.FC<{ machine: Machine }> = ({ machine }) => 
       </h5>
       <div>
         <h4>Details</h4>
-        {machine.install_date.getDay()}
+        <ul>
+          <li>Number of pings: {machine.pings}</li>
+          <li>Number of pings per hours: {
+            Math.round(machine.pings / ((
+              machine.updatedAt.getMilliseconds() ?? Date.now() -
+              machine.createdAt.getMilliseconds()
+            ) / 1000 / 60 / 60))
+          }</li>
+          <li>Number of errors: {
+            machine.errors
+          }</li>
+        </ul>
       </div>
     </div>
   </Detail>

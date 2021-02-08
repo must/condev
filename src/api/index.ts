@@ -1,4 +1,4 @@
-import { Machine, MachineType, MachineStatus } from '../models';
+import { Machine, MachineType, MachineStatus, MachineEvent } from '../models';
 
 export interface APIMachineResponseType {
   id: string;
@@ -27,7 +27,19 @@ const normalizeMachine = (m: APIMachineResponseType): Machine => {
     ...m,
     install_date: new Date(m.install_date),
     last_maintenance: new Date(m.last_maintenance),
-    timestamp: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    pings: 0,
+    errors: m.status === 'errored' ? 1 : 0,
+    last_online: m.status === 'errored' ? new Date() : null,
+    events: []
+  };
+};
+
+const normalizeUpdateEvent = (update: APIMachineUpdateType): MachineEvent => {
+  return {
+    ...update,
+    timestamp: new Date(update.timestamp)
   };
 };
 
@@ -65,16 +77,24 @@ export const dataConnector = {
   },
   update(data: Machine[], update: APIMachineUpdateType) {
     const machineIndex = data.findIndex(m => m.id === update.machine_id);
+    console.log({update});
 
     return data.map((machine, index) => {
-      if (index !== machineIndex) {
+      if (
+        index !== machineIndex ||
+        machine.events.findIndex(e => e.id === update.id) !== -1
+      ) {
         return machine;
       }
 
       return {
         ...machine,
         status: update.status,
-        timestamp: new Date(update.timestamp)
+        updatedAt: new Date(update.timestamp),
+        errors: update.status === 'errored' ? machine.errors + 1 : machine.errors,
+        pings: machine.pings + 1,
+        last_online: update.status === 'errored' ? new Date(update.timestamp) : null,
+        events: [machine.events, normalizeUpdateEvent(update)]
       } as Machine;
     });
   },
