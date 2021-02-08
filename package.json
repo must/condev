@@ -56,5 +56,8 @@
     "comment": "Keep this section to use the Piral CLI.",
     "name": "sample-piral"
   },
-  "peerModules": []
+  "peerModules": [],
+  "dependencies": {
+    "themed-jss": "^0.3.5"
+  }
 }
