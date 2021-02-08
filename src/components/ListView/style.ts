@@ -16,7 +16,7 @@ export const ListStyle = style(theme => ({
   listStyle: 'none',
   padding: '2em',
   width: '20%',
-  height: '100vh',
+  height: '80vh',
   margin: 0,
   overflow: 'scroll',
 }));
@@ -30,5 +30,5 @@ export const ListItemStyle = style(theme => ({
 
 export const DetailStyle = style(() => ({
   width: '80%',
-  height: '100vh',
+  height: '80vh',
 }));
