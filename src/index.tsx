@@ -1,15 +1,13 @@
-import * as React from 'react';
 import { PiletApi } from 'sample-piral';
+import { Menu } from './menu';
+
+import { MachinesPage } from './pages/machines';
+
+import { dataConnector } from './api';
 
 export function setup(app: PiletApi) {
-  app.showNotification('Hello from Piral!', {
-    autoClose: 2000,
-  });
-  app.registerMenu(() =>
-    <a href="https://docs.piral.io" target="_blank">Documentation</a>
-  );
-  app.registerTile(() => <div>Welcome to Piral!</div>, {
-    initialColumns: 2,
-    initialRows: 1,
-  });
+  const connect = app.createConnector(dataConnector);
+
+  app.registerMenu(Menu);
+  app.registerPage('/machines', connect(MachinesPage));
 }
