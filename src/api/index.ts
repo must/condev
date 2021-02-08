@@ -39,7 +39,7 @@ const normalizeMachine = (m: APIMachineResponseType): Machine => {
 const normalizeUpdateEvent = (update: APIMachineUpdateType): MachineEvent => {
   return {
     ...update,
-    timestamp: new Date(update.timestamp)
+    timestamp: fromUTC(update.timestamp)
   };
 };
 
@@ -77,7 +77,6 @@ export const dataConnector = {
   },
   update(data: Machine[], update: APIMachineUpdateType) {
     const machineIndex = data.findIndex(m => m.id === update.machine_id);
-    console.log({update});
 
     return data.map((machine, index) => {
       if (
@@ -90,12 +89,18 @@ export const dataConnector = {
       return {
         ...machine,
         status: update.status,
-        updatedAt: new Date(update.timestamp),
+        updatedAt: fromUTC(update.timestamp),
         errors: update.status === 'errored' ? machine.errors + 1 : machine.errors,
         pings: machine.pings + 1,
-        last_online: update.status === 'errored' ? new Date(update.timestamp) : null,
+        last_online: update.status === 'errored' ? fromUTC(update.timestamp) : null,
         events: [machine.events, normalizeUpdateEvent(update)]
       } as Machine;
     });
   },
+};
+
+const fromUTC = (timestamp: string) => {
+  const date = new Date(timestamp);
+
+  return new Date(date.getMilliseconds() + date.getTimezoneOffset() * 60 * 1000);
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ListView, List, Item, Detail } from '../components/ListView';
 import { Map, Pin } from '../components/Map';
@@ -8,7 +8,7 @@ import { Themed } from 'themed-jss/react';
 import { main } from '../themes/main';
 
 import { useThemedStyle } from 'themed-jss/react';
-import { MachineStatus, DetailStyle } from './machines/style';
+import { MachineStatus, DetailStyle, BtnStyle } from './machines/style';
 import { centroid } from '../util/geo';
 
 export interface MachinePageProps {
@@ -49,6 +49,26 @@ const MapComponent = ({ data }: MachinePageProps) => {
   </Detail>);
 };
 
+const PingsComponent: React.FC<{ machine: Machine }> = ({ machine }) => {
+  const [time, setTime] = useState(Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(Date.now()), 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return <>{
+    machine.pings ?
+      Math.round(machine.pings / ((
+        time -
+        machine.updatedAt.getMilliseconds()
+      ) / 1000 / 60 / 60)) : 0
+  }</>;
+};
+
 const MachineDetailComponent: React.FC<{ machine: Machine }> = ({ machine }) => (
   <Detail id={machine.id}>
     <div className={useThemedStyle(DetailStyle)}>
@@ -62,15 +82,11 @@ const MachineDetailComponent: React.FC<{ machine: Machine }> = ({ machine }) => 
         <h4>Details</h4>
         <ul>
           <li>Number of pings: {machine.pings}</li>
-          <li>Number of pings per hours: {
-            Math.round(machine.pings / ((
-              machine.updatedAt.getMilliseconds() ?? Date.now() -
-              machine.createdAt.getMilliseconds()
-            ) / 1000 / 60 / 60))
-          }</li>
+          <li>Number of pings per hours: <PingsComponent machine={machine}/></li>
           <li>Number of errors: {
             machine.errors
           }</li>
+          <button className={useThemedStyle(BtnStyle)}>Add note</button>
         </ul>
       </div>
     </div>

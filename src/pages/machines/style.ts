@@ -19,3 +19,9 @@ export const MachineStatus = style(theme => ({
     color: theme.colors.lightGreen,
   }
 }));
+
+export const BtnStyle = style(theme => ({
+  background: theme.primaryColor,
+  color: theme.backgroundColor,
+  border: '1px solid #ddd'
+}));
