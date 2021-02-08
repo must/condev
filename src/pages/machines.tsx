@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { MapListView, List, Item } from '../components/MapListView';
+
+import { ListView, List, Item, Detail } from '../components/ListView';
+import { Map } from '../components/Map';
 import { Machine } from '../models';
 
 import { Themed } from 'themed-jss/react';
@@ -15,18 +17,29 @@ export interface MachinePageProps {
 const MachineComponent = ({ machine }: { machine: Machine }) => (
   <Item>
     <h4>{machine.id}</h4>
+    Status:
     <span
       className={`${useThemedStyle(MachineStatus)} ${machine.status}`}
-    >{machine.status}</span>
+    > {machine.status}</span>
   </Item>
 );
 
 export const MachinesPage = ({ data }: MachinePageProps) => (
   <Themed theme={main}>
-    <MapListView>
+    <ListView>
       <List>
-        { data.map(machine => <MachineComponent machine={machine} />) }
+        { data.map(machine => <MachineComponent key={machine.id} machine={machine} />) }
       </List>
-    </MapListView>
+      <Detail>
+        <Map
+          apiKey={process.env.GOOGLE_API_KEY}
+          center={{
+            lat: 59.95,
+            lng: 30.33
+          }}
+          zoom={11}
+        />
+      </Detail>
+    </ListView>
   </Themed>
 );

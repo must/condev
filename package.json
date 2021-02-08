@@ -58,6 +58,7 @@
   },
   "peerModules": [],
   "dependencies": {
+    "google-map-react": "^2.1.9",
     "themed-jss": "^0.3.5"
   }
 }

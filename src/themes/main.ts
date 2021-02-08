@@ -22,7 +22,13 @@ export const main = theme(
   },
   // dark mode overrides:
   {
-    backgroundColor: '#0f3057',
-    textColor: 'white',
+    backgroundColor: '#152f4e',
+    textColor: '#dcdcdc',
+
+    colors: {
+      green: '#8bff8b',
+      blue: '#8fa6ff',
+      red: '#ff5353',
+    }
   }
 );
