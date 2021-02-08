@@ -13,7 +13,13 @@ export type MapProps = {
   zoom: number;
 };
 
-export const Pin = ({ lat, lng, text }) => (
+export type PinProps = {
+  lat: number;
+  lng: number;
+  text: string;
+};
+
+export const Pin: React.FC<PinProps> = () => (
   <div className={useThemedStyle(PinStyle)}></div>
 );
 

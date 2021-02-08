@@ -8,6 +8,9 @@ export const main = theme(
     textColor: '#424242',
     fontFamily: "Calibri, 'Trebuchet MS', sans-serif",
 
+    highlightBackground: '#f7f7f7',
+    highlightTextColor: '#424242',
+
     text: {
       size: {
         normal: '1.1em'
@@ -24,6 +27,9 @@ export const main = theme(
   {
     backgroundColor: '#152f4e',
     textColor: '#dcdcdc',
+
+    highlightBackground: '#f7f7f7',
+    highlightTextColor: '#424242',
 
     colors: {
       green: '#8bff8b',

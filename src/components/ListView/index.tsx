@@ -1,9 +1,23 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import { useThemedStyle } from 'themed-jss/react';
 import { ListStyle, ListViewStyle, ListItemStyle, DetailStyle } from './style';
+import { MasterContext, useMasterContext } from './MasterContext';
 
-export const Item: React.FC = ({ children }) => (<li className={useThemedStyle(ListItemStyle)}>{children}</li>);
+export type ItemType = {
+  id: string;
+};
+
+export const Item: React.FC<ItemType> = ({ children, id }) => {
+  const { setCurrent } = useMasterContext();
+
+  return <li
+    className={useThemedStyle(ListItemStyle)}
+    onClick={() => setCurrent(id)}
+  >
+    {children}
+  </li>;
+};
 
 
 export type ListItemType = {
@@ -16,9 +30,24 @@ export const List: React.FC & ListItemType = ({ children }) => (
 
 List.Item = Item;
 
-export const Detail: React.FC = ({ children }) => (
-  <div className={useThemedStyle(DetailStyle)}>{children}</div>
-);
+export type ListDetailType = {
+  isDefault?: boolean;
+  id?: string;
+};
+
+export const Detail: React.FC<ListDetailType> = ({ children, id, isDefault = false }) => {
+  const { current } = useMasterContext();
+
+  const display = (
+    isDefault &&
+    current === 'default'
+  ) || (
+    id &&
+    current === id
+  );
+
+  return display ? <div className={useThemedStyle(DetailStyle)}>{children}</div> : <></>;
+};
 
 
 export type ListType = {
@@ -26,9 +55,14 @@ export type ListType = {
   Detail: typeof Detail;
 };
 
-export const ListView: React.FC & ListType= ({ children }) => (
-  <div className={useThemedStyle(ListViewStyle)}>{children}</div>
-);
+export const ListView: React.FC & ListType= ({ children }) => {
+  const [current, setCurrent] = useState<string>('default');
+
+  return <MasterContext.Provider
+    value={{ current, setCurrent }}>
+    <div className={useThemedStyle(ListViewStyle)}>{children}</div>
+  </MasterContext.Provider>;
+};
 
 ListView.List = List;
 ListView.Detail = Detail;

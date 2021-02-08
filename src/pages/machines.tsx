@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { ListView, List, Item, Detail } from '../components/ListView';
 import { Map, Pin } from '../components/Map';
@@ -15,8 +15,8 @@ export interface MachinePageProps {
   data: Machine[];
 }
 
-const MachineComponent = ({ machine }: { machine: Machine }) => (
-  <Item>
+const MachineItemComponent = ({ machine }: { machine: Machine }) => (
+  <Item id={machine.id}>
     <h4>{machine.id}</h4>
     Status:
     <span
@@ -25,33 +25,44 @@ const MachineComponent = ({ machine }: { machine: Machine }) => (
   </Item>
 );
 
-export const MachinesPage = ({ data }: MachinePageProps) => {
+const MapComponent = ({ data }: MachinePageProps) => {
   const center = centroid(data);
+
+  return (<Detail isDefault>
+    <Map
+      apiKey={process.env.GOOGLE_API_KEY}
+      center={{
+        lat: center.latitude,
+        lng: center.longitude
+      }}
+      zoom={18}
+    >
+      { data.map(machine =>
+        <Pin
+          key={machine.id}
+          lat={machine.latitude}
+          lng={machine.longitude}
+          text={machine.id}
+        />
+      )}
+    </Map>
+  </Detail>);
+};
+
+export const MachinesPage = ({ data }: MachinePageProps) => {
 
   return (
     <Themed theme={main}>
       <ListView>
         <List>
-          { data.map(machine => <MachineComponent key={machine.id} machine={machine} />) }
+          { data.map(machine =>
+            <MachineItemComponent key={machine.id} machine={machine} />
+          )}
         </List>
-        <Detail>
-          <Map
-            apiKey={process.env.GOOGLE_API_KEY}
-            center={{
-              lat: center.latitude,
-              lng: center.longitude
-            }}
-            zoom={18}
-          >
-            { data.map(machine =>
-              <Pin
-                lat={machine.latitude}
-                lng={machine.longitude}
-                text={machine.id}
-              />
-            )}
-          </Map>
-        </Detail>
+        <MapComponent data={data}/>
+        { data.map(machine => <Detail id={machine.id}>
+          {machine.id}
+        </Detail>) }
       </ListView>
     </Themed>
   );

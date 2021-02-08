@@ -1,4 +1,4 @@
-import { style } from 'themed-jss';
+import { style, when } from 'themed-jss';
 
 export const ListViewStyle = style(theme => ({
   background: theme.backgroundColor,
@@ -14,7 +14,7 @@ export const ListStyle = style(theme => ({
   background: theme.backgroundColor,
   color: theme.textColor,
   listStyle: 'none',
-  padding: '2em',
+  padding: '1em',
   width: '20%',
   height: '80vh',
   margin: 0,
@@ -22,10 +22,16 @@ export const ListStyle = style(theme => ({
 }));
 
 export const ListItemStyle = style(theme => ({
-  padding: '1em 0',
+  padding: '1em 0.5em',
   border: '1px solid #eee',
   borderColor: theme.textColor,
   borderStyle: 'none none solid none',
+  cursor: 'pointer',
+
+  [when(':hover')]: {
+    background: theme.highlightTextColor,
+    color: theme.highlightBackground
+  }
 }));
 
 export const DetailStyle = style(() => ({
