@@ -16,5 +16,5 @@ npm i              # --> install dependencies
 ```
 ```bash
 export GOOGLE_API_KEY="<GOOGLE_API_KEY>"
-npm start          # --> serves `samples/index.tsx` on localhost:3000
+npm start          # --> serves `src/index.tsx` on localhost:3000
 ```
