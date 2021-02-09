@@ -7,7 +7,7 @@ export const main = theme(
     backgroundColor: '#f7f7f7',
     secondaryBackgroundColor: '#5a718c',
     textColor: '#424242',
-    
+
     fontFamily: "Calibri, 'Trebuchet MS', sans-serif",
 
     highlightBackground: '#f7f7f7',

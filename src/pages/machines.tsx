@@ -69,7 +69,7 @@ const PingsComponent: React.FC<{ machine: Machine }> = ({ machine }) => {
     machine.pings ?
       Math.round(machine.pings / ((
         time -
-        machine.updatedAt.getMilliseconds()
+        machine.updatedAt.getTime()
       ) / 1000 / 60 / 60)) : 0
   }</>;
 };

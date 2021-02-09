@@ -22,6 +22,12 @@ export type MachinesAPIResponseType = {
   data: APIMachineResponseType[]
 };
 
+const fromUTC = (timestamp: string) => {
+  const date = new Date(timestamp);
+
+  return new Date(date.getTime());
+};
+
 const normalizeMachine = (m: APIMachineResponseType): Machine => {
   return {
     ...m,
@@ -93,14 +99,8 @@ export const dataConnector = {
         errors: update.status === 'errored' ? machine.errors + 1 : machine.errors,
         pings: machine.pings + 1,
         last_online: update.status === 'errored' ? fromUTC(update.timestamp) : null,
-        events: [machine.events, normalizeUpdateEvent(update)]
+        events: [...machine.events, normalizeUpdateEvent(update)]
       } as Machine;
     });
   },
-};
-
-const fromUTC = (timestamp: string) => {
-  const date = new Date(timestamp);
-
-  return new Date(date.getMilliseconds() + date.getTimezoneOffset() * 60 * 1000);
 };
