@@ -8,8 +8,13 @@ import { Themed } from 'themed-jss/react';
 import { main } from '../themes/main';
 
 import { useThemedStyle } from 'themed-jss/react';
-import { MachineStatus, DetailStyle, BtnStyle } from './machines/style';
+import {
+  MachineStatus, DetailStyle, BtnStyle,
+  TextareaStyle, CommentsStyle, CommentStyle
+} from './machines/style';
 import { centroid } from '../util/geo';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { timeSince } from '../util/date';
 
 export interface MachinePageProps {
   data: Machine[];
@@ -69,8 +74,13 @@ const PingsComponent: React.FC<{ machine: Machine }> = ({ machine }) => {
   }</>;
 };
 
-const MachineDetailComponent: React.FC<{ machine: Machine }> = ({ machine }) => (
-  <Detail id={machine.id}>
+const MachineDetailComponent: React.FC<{ machine: Machine }> = ({ machine }) => {
+  const [comments, setComments] = useLocalStorage(`machine#${machine.id}`, []);
+  const [value, setValue] = useState('');
+
+  const commentStyle = useThemedStyle(CommentStyle);
+
+  return <Detail id={machine.id}>
     <div className={useThemedStyle(DetailStyle)}>
       <h1>{machine.id}</h1>
       <h5>
@@ -86,12 +96,36 @@ const MachineDetailComponent: React.FC<{ machine: Machine }> = ({ machine }) => 
           <li>Number of errors: {
             machine.errors
           }</li>
-          <button className={useThemedStyle(BtnStyle)}>Add note</button>
+        </ul>
+        <input
+          className={useThemedStyle(TextareaStyle)}
+          value={value}
+          onChange={(v) => setValue(v.target.value)}
+          type='text'
+        />
+        <button
+          className={useThemedStyle(BtnStyle)}
+          onClick={() => {
+            setComments([{ text: value, createdAt: new Date() }, ...comments]);
+            setValue('');
+          }}
+        >Add note</button>
+        <ul
+          className={useThemedStyle(CommentsStyle)}
+        >
+          {comments.map(comment =>
+            <li
+              className={commentStyle}
+              key={comment.createdAt}
+            >
+              <div>{comment.text}</div>
+              <div>{timeSince(new Date(comment.createdAt))}</div>
+            </li>)}
         </ul>
       </div>
     </div>
-  </Detail>
-);
+  </Detail>;
+};
 
 export const MachinesPage = ({ data }: MachinePageProps) => {
 

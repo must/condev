@@ -25,3 +25,21 @@ export const BtnStyle = style(theme => ({
   color: theme.backgroundColor,
   border: '1px solid #ddd'
 }));
+
+export const TextareaStyle = style(() => ({
+  display: 'block',
+  marginBottom: '1em'
+}));
+
+export const CommentsStyle = style(() => ({
+  listStyle: 'none',
+  margin: 0,
+  padding: '1em',
+  width: '30%'
+}));
+
+export const CommentStyle = style(() => ({
+  margin: '1em 0',
+  borderBottom: '1px dashed #eee',
+  padding: '0 0 1em 0',
+}));

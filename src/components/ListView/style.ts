@@ -39,4 +39,5 @@ export const DetailStyle = style((theme) => ({
   color: theme.secondaryTextColor,
   width: '80%',
   height: '80vh',
+  overflow: 'scroll',
 }));
